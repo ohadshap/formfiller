@@ -14,6 +14,12 @@
     "categories": {
       "auth": {
         "formfiller86c3f317": {}
+      },
+      "api": {
+        "formfiller": {}
+      },
+      "storage": {
+        "pdfTemplatesStorage": {}
       }
     }
   }
