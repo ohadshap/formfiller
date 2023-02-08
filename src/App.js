@@ -1,26 +1,25 @@
 import React from "react";
 import "./App.css";
 import "@aws-amplify/ui-react/styles.css";
-import { Route, Routes, Link } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 import Home from "./pages/Home";
 import MyTemplates from "./pages/MyTemplates";
-import TopNavBar from "./pages/topBar";
 import SideMenu from "./pages/SideMenu";
 import {
-  Grid,
-  Card,
-  Button,
   withAuthenticator,
 } from "@aws-amplify/ui-react";
 
 const App = ({ signOut }) => {
   return (
-    <SideMenu>
-      <Routes >
-        <Route path="/" element={<Home />} />
-        <Route path="/Temps" element={<MyTemplates />} />
-      </Routes>
-    </SideMenu>
+    // <>
+      // {/* <TopNavBar/> */}
+      <SideMenu logout={signOut}>
+        <Routes >
+          <Route path="/" element={<Home />} />
+          <Route path="/Temps" element={<MyTemplates />} />
+        </Routes>
+      </SideMenu>
+      // </>
   );
   // return (
   //   <>
