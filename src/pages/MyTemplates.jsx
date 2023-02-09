@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "../App.css";
 import "@aws-amplify/ui-react/styles.css";
-import { API, Storage } from "aws-amplify";
+// import { API, Storage } from "aws-amplify";
 import {
     Button,
     Flex,
@@ -11,26 +11,27 @@ import {
     TextField,
     View,
 } from "@aws-amplify/ui-react";
+import { fetchDocsAndTemps } from "../utils/api/fetchers"
 // TODO - remove all imports and import only queries
 // approach it as queries.listDocuments
 // DO THE SAME FOR MUTATIONS
-import { 
-    getDocument,
-    listDocuments,
-    getAnnotation,
-    listAnnotations,
-    annotationsByDocId,
-} from "../graphql/queries"
+// import { 
+//     getDocument,
+//     listDocuments,
+//     getAnnotation,
+//     listAnnotations,
+//     annotationsByDocId,
+// } from "../graphql/queries"
 
-import { listDocsAndAnnotations } from '../utils/graphql-custom/queries'
-import {
-    createDocument as createDocumentMutation,
-    updateDocument as updateDocumentMutation,
-    deleteDocument as deleteDocumentMutation,
-    createAnnotation as createAnnotationMutation,
-    updateAnnotation as updateAnnotationMutation,
-    deleteAnnotation as deleteAnnotationMutation,
-} from "../graphql/mutations";
+// import { listDocsAndAnnotations } from '../utils/graphql-custom/queries'
+// import {
+//     createDocument as createDocumentMutation,
+//     updateDocument as updateDocumentMutation,
+//     deleteDocument as deleteDocumentMutation,
+//     createAnnotation as createAnnotationMutation,
+//     updateAnnotation as updateAnnotationMutation,
+//     deleteAnnotation as deleteAnnotationMutation,
+// } from "../graphql/mutations";
 
 const MyTemplates = () => {
     const [docs, setDocs] = useState([]);
@@ -39,23 +40,13 @@ const MyTemplates = () => {
     ]);
   
     useEffect(() => {
-      fetchDocs();
+      getTemplates();
     }, []);
   
-    const fetchDocs = async () => {
-      const apiData = await API.graphql({ query: listDocsAndAnnotations });
-      const docsFromAPI = apiData.data.listDocuments.items;
-      await Promise.all(
-        docsFromAPI.map(async (doc) => {
-          if (doc.image) {
-            const url = await Storage.get(doc.name);
-            doc.image = url;
-          }
-          return doc;
-        })
-      );
-      console.log('FETCH DOCS', docsFromAPI);
-      setDocs(docsFromAPI);
+    const getTemplates = async () => {
+        const docsFromAPI = await fetchDocsAndTemps();
+        console.log('FETCH DOCS', docsFromAPI.length);
+        setDocs(docsFromAPI);
     }
   
     const createDoc = async (event) => {
@@ -75,7 +66,7 @@ const MyTemplates = () => {
       //   query: createDocumentMutation,
       //   variables: { input: data },
       // });
-      // fetchDocs();
+      // getTemplates();
       // event.target.reset();
     }
   
@@ -106,7 +97,6 @@ const MyTemplates = () => {
     return (
       <View className="App">
         <Heading level={1}>This is My Templates page</Heading>
-        <Heading level={2}>PDF Template Filler</Heading>
         <View as="form" margin="3rem 0" onSubmit={createDoc}>
           <Flex direction="row" justifyContent="center">
             <TextField
