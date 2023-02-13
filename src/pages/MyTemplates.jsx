@@ -96,7 +96,7 @@ const MyTemplates = () => {
   
     return (
       <View className="App">
-        <Heading level={1}>This is My Templates page</Heading>
+        <Heading level={6}>My Templates</Heading>
         <View as="form" margin="3rem 0" onSubmit={createDoc}>
           <Flex direction="row" justifyContent="center">
             <TextField
@@ -165,7 +165,7 @@ const MyTemplates = () => {
             </Button>
           </Flex>
         </View>
-        <Heading level={3}>Current Documents</Heading>
+        <Heading level={3}>Current Templates</Heading>
         <View margin="3rem 0">
           {docs.map((doc) => (
             <Flex

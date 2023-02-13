@@ -1,5 +1,6 @@
 import { API, Storage } from "aws-amplify";
 import { listDocsAndAnnotations } from "../graphql-custom/queries"
+import { getDocument } from '../../graphql/queries'
 
 export const fetchDocs = async () => {
     try {
@@ -29,3 +30,20 @@ export const fetchDocsAndTemps = async () => {
         return null
     }
 };
+
+export const getDoc = async (id) => {
+    try {
+        if (!id) {
+            throw new Error('no id was supplied')
+        }
+        const apiData = await API.graphql({
+            query: getDocument,
+            variables: { id },
+        });
+        return apiData.data.getDocument;
+    } catch (error) {
+        console.log('ERROR - fetchDocs', error);
+        return null
+    }
+};
+// b0dbd57b-dab3-4593-910e-a3ed2afcd910

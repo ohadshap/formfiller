@@ -1,14 +1,12 @@
 import React, { useState, useEffect } from "react";
 import {
     Button,
-    Flex,
     Heading,
     Image,
     Collection,
     Card,
     View,
     Divider,
-    Badge,
 } from "@aws-amplify/ui-react";
 
 const DashboardCard = ({items}) => {
@@ -17,13 +15,7 @@ const DashboardCard = ({items}) => {
         setDocs([...items, { name: 'Milford - Room' }])
         
     }, []);
-    // const items = [
-    //     ...docs,
-    //     {
-    //       name: 'Milford - Room #2',
-    //     },
-    //   ];
-
+   
     return (
         <Collection
             items={docs}
