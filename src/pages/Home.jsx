@@ -48,6 +48,7 @@ const Home = () => {
                 <>
                     <div className="blur_background"></div>
                     <BigPopUp closePopUp={closePopUp}/>
+                    {/* <BigPopUp id='b0dbd57b-dab3-4593-910e-a3ed2afcd910' closePopUp={closePopUp}/> */}
                 </>
             )}
             {(docs && docs.length) && ( 
