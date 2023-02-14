@@ -5,7 +5,7 @@ import {
     Tabs,
     TabItem,
     TextField,
-    Collection,
+    Text,
     Card,
     View,
     Divider,
@@ -95,7 +95,7 @@ const BigPopUp = ({id = null, closePopUp}) => {
                         >
                         <TabItem color="lavender" title="Details">
                         </TabItem>
-                        <TabItem color="lavender" title="Fields">
+                        <TabItem color="lavender" title="Upload">
                         </TabItem>
                     </Tabs>
                 </Card>
@@ -131,6 +131,11 @@ const BigPopUp = ({id = null, closePopUp}) => {
                                 padding="20px"
                                 onChange={(e) => handleInput(e)}
                             />
+                        </>
+                    )}
+                    {tabIndex === 1  && (
+                        <View>
+                            <Text>Upload PDF Temolate</Text>
                             <View
                                 padding="20px"
                                 width="270px"
@@ -148,10 +153,7 @@ const BigPopUp = ({id = null, closePopUp}) => {
                                     <Card>{doc.name}</Card>
                                 )}
                             </View>
-                        </>
-                    )}
-                    {tabIndex === 1  && (
-                        <View>
+                            
                             <Button onClick={() => handleTab()}>SECOND TAB - Fields. click to go back</Button>
                         </View>
                     )}
@@ -167,7 +169,12 @@ const BigPopUp = ({id = null, closePopUp}) => {
                     alignItems="center"
                 >
                     <Button color="lavender" marginLeft="35px" onClick={() => closePopUp()}>Close</Button>
-                    <Button color="lavender" onClick={() => createDoc()}>Create</Button>
+                    {tabIndex === 0 && (
+                        <Button color="lavender" onClick={() => changeTab(1)}>Next</Button>
+                    )}
+                    {tabIndex === 1 && (
+                        <Button color="lavender" onClick={() => createDoc()}>Create</Button>
+                    )}
                 </Flex>
             </Grid>
         </View>

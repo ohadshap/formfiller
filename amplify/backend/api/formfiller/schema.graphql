@@ -14,9 +14,9 @@ type Annotation @model @auth(rules: [ { allow: public } ] ) {
   id: ID!
   field: String!
   docId: ID! @index(name: "byDoc")
-  page: Int!
-  x: Int!
-  y: Int!
+  page: Int
+  x: Int
+  y: Int
   text: String
   font: Boolean
   fontSize: Int
