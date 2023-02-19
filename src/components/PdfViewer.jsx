@@ -1,23 +1,26 @@
 import React, { useState, useEffect, useRef } from 'react';
-import pdfjsLib from 'pdfjs-dist';
+import * as pdfjsLib from 'pdfjs-dist';
 import 'pdfjs-dist/build/pdf.worker.entry'; // Make sure to add this line
 
 const PdfViewer = ({ url }) => {
     const [pdfDoc, setPdfDoc] = useState(null);
     const canvasRef = useRef(null);
+    console.log('pdfViewer - url', url);
   
     useEffect(() => {
       async function loadPdf() {
-        const pdf = await pdfjsLib.getDocument(url).promise;
+        const pdf = await pdfjsLib.getDocument({ url }).promise;
         setPdfDoc(pdf);
       }
+      
       loadPdf();
     }, [url]);
   
     useEffect(() => {
       async function renderPdf() {
         if (!pdfDoc) return;
-  
+        console.log("pdfDoc", pdfDoc);
+        await new Promise(resolve => setTimeout(resolve, 1000));
         const canvas = canvasRef.current;
         const context = canvas.getContext('2d');
         const page = await pdfDoc.getPage(1);
@@ -40,4 +43,3 @@ const PdfViewer = ({ url }) => {
 }
 
 export default PdfViewer;
-  

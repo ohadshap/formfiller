@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "../App.css";
 import "@aws-amplify/ui-react/styles.css";
-// import { API, Storage } from "aws-amplify";
+import { API, Storage } from "aws-amplify";
 import {
     Button,
     Flex,
@@ -24,14 +24,14 @@ import { fetchDocsAndTemps } from "../utils/api/fetchers"
 // } from "../graphql/queries"
 
 // import { listDocsAndAnnotations } from '../utils/graphql-custom/queries'
-// import {
-//     createDocument as createDocumentMutation,
-//     updateDocument as updateDocumentMutation,
-//     deleteDocument as deleteDocumentMutation,
-//     createAnnotation as createAnnotationMutation,
-//     updateAnnotation as updateAnnotationMutation,
-//     deleteAnnotation as deleteAnnotationMutation,
-// } from "../graphql/mutations";
+import {
+    createDocument as createDocumentMutation,
+    updateDocument as updateDocumentMutation,
+    deleteDocument as deleteDocumentMutation,
+    createAnnotation as createAnnotationMutation,
+    updateAnnotation as updateAnnotationMutation,
+    deleteAnnotation as deleteAnnotationMutation,
+} from "../graphql/mutations";
 
 const MyTemplates = () => {
     const [docs, setDocs] = useState([]);
@@ -45,7 +45,8 @@ const MyTemplates = () => {
   
     const getTemplates = async () => {
         const docsFromAPI = await fetchDocsAndTemps();
-        console.log('FETCH DOCS', docsFromAPI.length);
+        // console.log('FETCH DOCS', docsFromAPI.length);
+        console.log('FETCH DOCS', docsFromAPI);
         setDocs(docsFromAPI);
     }
   
@@ -75,11 +76,11 @@ const MyTemplates = () => {
       const newDocs = docs.filter((doc) => doc.id !== id);
       console.log('deleteDoc - new docs', newDocs);
       setDocs(newDocs);
-      // await Storage.remove(name);
-      // await API.graphql({
-      //   query: deleteDocumentMutation,
-      //   variables: { input: { id } },
-      // });
+      await Storage.remove(name);
+      await API.graphql({
+        query: deleteDocumentMutation,
+        variables: { input: { id } },
+      });
     }
   
     const addInput = () => {

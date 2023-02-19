@@ -11,7 +11,7 @@ import {
     Text,
     View,
 } from "@aws-amplify/ui-react";
-import { fetchDocsAndTemps, getDoc } from "../utils/api/fetchers"
+import { fetchDocsAndTemps, fetchDocs, getDoc } from "../utils/api/fetchers"
 
 
 const Home = () => {
@@ -23,9 +23,9 @@ const Home = () => {
       }, []);
     
       const getTemplates = async () => {
-            const docsFromAPI = await fetchDocsAndTemps();
+            const docsFromAPI = await fetchDocs();
             console.log('FETCH DOCS', docsFromAPI);
-            const singleDoc = await getDoc();
+            // const singleDoc = await getDoc();
             setDocs(docsFromAPI);
       }
 

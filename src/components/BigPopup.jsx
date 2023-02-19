@@ -1,4 +1,7 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { API, Storage } from "aws-amplify";
+import { getDoc } from "../utils/api/fetchers"
 import {
     Button,
     Grid,
@@ -8,14 +11,17 @@ import {
     Text,
     Card,
     View,
-    Divider,
+    FileUploader,
     Flex,
 } from "@aws-amplify/ui-react";
-import { getDoc } from "../utils/api/fetchers"
+import {
+    createDocument as createDocumentMutation,
+} from "../graphql/mutations";
 
 const BigPopUp = ({id = null, closePopUp}) => {
     const [doc, setDoc] = useState({});
     const [tabIndex, setTabIndex] = useState(0);
+    const navigate = useNavigate();
 
     useEffect(() => {
         fetchDoc(id);
@@ -31,27 +37,38 @@ const BigPopUp = ({id = null, closePopUp}) => {
     }
 
     const createDoc = async () => {
-        // event.preventDefault();
-        // const form = new FormData(event.target);
-        // const image = form.get("image");
+        console.log('createDoc - doc', doc);
+        // if (!!doc.image) {
+        //     const key = await Storage.put(doc.name, doc.image);
+        //     console.log('createDoc - key', key);
+        //     console.log('createDoc - doc', doc);
+        // }
         
-        // const data = {
-        // name: form.get("name"),
-        // description: form.get("description"),
-        // image: image.name,
-        // };
-        console.log('createDoc', doc);
+        const res = await API.graphql({
+          query: createDocumentMutation,
+          variables: { input: doc },
+        });
+        console.log("res", res.data.createDocument);
     }
 
     const handleInput = (e) => {
         const newDoc = doc;
         newDoc[e.target.name] = e.target.value;
-        console.log('INPUT change', `name: ${e.target.name}, value: ${e.target.value}`);
+        // console.log('INPUT change', `name: ${e.target.name}, value: ${e.target.value}`);
+        setDoc(newDoc);
+    }
+
+    const fileUploader = ({ key }) => {
+        console.log("fileUploader - key", key);
+        const newDoc = doc;
+        newDoc.image = key;
+        console.log("fileUploader - newDoc", newDoc);
         setDoc(newDoc);
     }
 
     const handleTab = () => {
-        setTabIndex(0)
+        console.log(doc);
+        // navigate(`/Temps/New`, { state: doc });
     }
 
     const changeTab = (i) => {
@@ -141,12 +158,23 @@ const BigPopUp = ({id = null, closePopUp}) => {
                                 width="270px"
                             >
                                 {!doc.image && (
-                                    <View
+                                    // <View
+                                    //     name="image"
+                                    //     as="input"
+                                    //     type="file"
+                                    //     style={{ alignSelf: "end" }}
+                                    //     onChange={(e) => handleInput(e)}
+                                    // />
+                                    <FileUploader
                                         name="image"
-                                        as="input"
-                                        type="file"
-                                        style={{ alignSelf: "end" }}
-                                        onChange={(e) => handleInput(e)}
+                                        hasMultipleFiles={false}
+                                        shouldAutoProceed={true}
+                                        showImages={false}
+                                        variation="drop"
+                                        acceptedFileTypes={['.pdf']}
+                                        accessLevel="public"
+                                        onSuccess={fileUploader}
+                                        // onChange={fileUploader}
                                     />
                                 )}
                                 {(doc.image && doc.name) && (

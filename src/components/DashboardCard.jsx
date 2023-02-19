@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import {
     Button,
     Heading,
@@ -11,10 +12,15 @@ import {
 
 const DashboardCard = ({items}) => {
     const [docs, setDocs] = useState([]);
+    const navigate = useNavigate();
+
     useEffect(() => {
-        setDocs([...items, { name: 'Milford - Room' }])
-        
+        setDocs(items)   
     }, []);
+
+    const goToTemp = (item) => {
+        navigate(`/Temps/${item.id}`, { state: item });
+    }
    
     return (
         <Collection
@@ -53,7 +59,11 @@ const DashboardCard = ({items}) => {
                     </Flex> */}
                     <Divider padding="xs" />
                     <Heading padding="medium">{item.description || "no desc"}</Heading>
-                    <Button variation="primary" isFullWidth>
+                    <Button
+                        variation="primary"
+                        isFullWidth
+                        onClick={() => goToTemp(item)}
+                        >
                         Use Template
                     </Button>
                 </View>

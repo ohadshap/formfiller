@@ -5,6 +5,7 @@ import { getDocument } from '../../graphql/queries'
 export const fetchDocs = async () => {
     try {
         const apiData = await API.graphql({ query: listDocsAndAnnotations });
+        // console.log("fetch test", apiData.data.listDocuments.items);
         return apiData.data.listDocuments.items;
     } catch (error) {
         console.log('ERROR - fetchDocs', error);
@@ -15,10 +16,11 @@ export const fetchDocs = async () => {
 export const fetchDocsAndTemps = async () => {
     try {
         const docs = await fetchDocs();
+        console.log("fetch test", docs);
         (docs && docs.length) && await Promise.all(
             docs.map(async (doc) => {
-                if(doc.image) {
-                    const url = await Storage.length(doc.name);
+                if(!!doc.image) {
+                    const url = await Storage.get(doc.name, { level: 'public' });
                     doc.image = url;
                 }
                 return doc;

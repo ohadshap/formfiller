@@ -2,13 +2,14 @@
   "resourceName": "pdfTemplatesStorage",
   "policyUUID": "b3086549",
   "bucketName": "pdf-templates-storage",
-  "storageAccess": "auth",
-  "guestAccess": [],
+  "storageAccess": "authAndGuest",
+  "guestAccess": [
+    "READ"
+  ],
   "authAccess": [
     "CREATE_AND_UPDATE",
     "READ",
     "DELETE"
   ],
-  "triggerFunction": "NONE",
   "groupAccess": {}
 }
